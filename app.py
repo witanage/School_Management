@@ -15,21 +15,21 @@ CORS(app)
 app.config['SECRET_KEY'] = 'your_secret_key_here'  # Change this to a strong secret key
 
 # Database connection details
-# db_config = {
-#     "host": "localhost",
-#     "user": "root",
-#     "password": "",
-#     "database": "school"
-# }
 db_config = {
-    "host": "sql.freedb.tech",
-    "user": "freedb_root_lk",
-    "password": "s3%E%AXDQ4EXMe3",
-    "database": "freedb_school_lk"
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "school"
+    # "host": "sql.freedb.tech",
+    # "user": "freedb_root_lk",
+    # "password": "s3%E%AXDQ4EXMe3",
+    # "database": "freedb_school_lk"
 }
+
 
 def connect_to_db():
     return pymysql.connect(**db_config)
+
 
 # Add a new student
 @app.route('/api/students', methods=['POST'])
@@ -77,6 +77,7 @@ def add_student():
         if 'connection' in locals():
             connection.close()
 
+
 # Add a new class
 @app.route('/api/classes', methods=['POST'])
 def add_class():
@@ -99,6 +100,7 @@ def add_class():
     finally:
         if 'connection' in locals():
             connection.close()
+
 
 # Add a new language stream
 @app.route('/api/language_streams', methods=['POST'])
@@ -123,6 +125,7 @@ def add_language_stream():
         if 'connection' in locals():
             connection.close()
 
+
 # Add a new stream
 @app.route('/api/streams', methods=['POST'])
 def add_stream():
@@ -145,6 +148,7 @@ def add_stream():
     finally:
         if 'connection' in locals():
             connection.close()
+
 
 # Add a new administrator
 @app.route('/api/administrators', methods=['POST'])
@@ -175,6 +179,7 @@ def add_administrator():
     finally:
         if 'connection' in locals():
             connection.close()
+
 
 # Login administrator
 @app.route('/api/login', methods=['POST'])
@@ -214,6 +219,7 @@ def login():
     finally:
         if 'connection' in locals():
             connection.close()
+
 
 # Logout administrator (invalidate the token)
 @app.route('/api/logout', methods=['POST'])
