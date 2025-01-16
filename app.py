@@ -16,14 +16,14 @@ app.config['SECRET_KEY'] = 'your_secret_key_here'  # Change this to a strong sec
 
 # Database connection details
 db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "school"
-    # "host": "sql.freedb.tech",
-    # "user": "freedb_root_lk",
-    # "password": "s3%E%AXDQ4EXMe3",
-    # "database": "freedb_school_lk"
+    # "host": "localhost",
+    # "user": "root",
+    # "password": "",
+    # "database": "school"
+    "host": "y83h6.h.filess.io",
+    "user": "schoollk_mustbranch",
+    "password": "4594fa9129855d7914edb028baddeef34ab23a70",
+    "database": "schoollk_mustbranch"
 }
 
 
@@ -229,4 +229,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
