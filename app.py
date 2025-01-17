@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  # Import CORS
 import pymysql
 from werkzeug.security import check_password_hash, generate_password_hash
-import jwt
+import jwt as pyjwt
 import datetime
 
 app = Flask(__name__)
@@ -207,7 +207,7 @@ def login():
             return jsonify({"error": "Invalid username or password"}), 401
 
         # Generate JWT token
-        token = jwt.encode(
+        token = pyjwt.encode(
             {'user_id': admin[0], 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)},
             app.config['SECRET_KEY'],
             algorithm='HS256'
