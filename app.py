@@ -213,6 +213,8 @@ def login():
             algorithm='HS256'
         )
 
+        token = token if isinstance(token, str) else token.decode('utf-8')
+
         return jsonify({'message': 'Login successful', 'token': token}), 200
 
     except Exception as e:
