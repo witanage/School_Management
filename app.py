@@ -22,6 +22,7 @@ db_config = {
     # "database": "school"
     "host": "y83h6.h.filess.io",
     "user": "schoollk_mustbranch",
+    "port": 3307,
     "password": "4594fa9129855d7914edb028baddeef34ab23a70",
     "database": "schoollk_mustbranch"
 }
