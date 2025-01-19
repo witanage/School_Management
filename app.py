@@ -39,13 +39,12 @@ def add_student():
         student_data = request.json
         name = student_data.get('name')
         age = student_data.get('age')
-        grade = student_data.get('grade')
         class_id = student_data.get('class_id')
         language_stream_id = student_data.get('language_stream_id')
         stream_id = student_data.get('stream_id')
 
         # Validate input
-        if not name or not isinstance(age, int) or not grade or not class_id or not language_stream_id or not stream_id:
+        if not name or not isinstance(age, int) or not class_id or not language_stream_id or not stream_id:
             return jsonify({"error": "Invalid input"}), 400
 
         connection = connect_to_db()
@@ -65,10 +64,10 @@ def add_student():
 
             # Insert student data
             sql = """
-                INSERT INTO students (name, age, grade, class_id, language_stream_id, stream_id)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO students (name, age, class_id, language_stream_id, stream_id)
+                VALUES (%s, %s, %s, %s, %s)
             """
-            cursor.execute(sql, (name, age, grade, class_id, language_stream_id, stream_id))
+            cursor.execute(sql, (name, age, class_id, language_stream_id, stream_id))
             connection.commit()
 
         return jsonify({"message": "Student added successfully!"}), 201
@@ -215,6 +214,104 @@ def login():
 
         return jsonify({'message': 'Login successful', 'token': token}), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+# Helper function to format query results with column names
+def format_results(cursor, results):
+    columns = [col[0] for col in cursor.description]
+    return [dict(zip(columns, row)) for row in results]
+
+
+# Retrieve all students with class, stream, and language stream names
+@app.route('/api/students', methods=['GET'])
+def get_students():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            # Use JOIN to get class, stream, and language stream names
+            sql = """
+                SELECT 
+                    s.id, s.name, s.age,
+                    c.name AS class_name, 
+                    ls.name AS language_stream_name, 
+                    st.name AS stream_name
+                FROM students s
+                JOIN classes c ON s.class_id = c.id
+                JOIN language_streams ls ON s.language_stream_id = ls.id
+                JOIN streams st ON s.stream_id = st.id
+            """
+            cursor.execute(sql)
+            students = cursor.fetchall()
+            return jsonify({"students": format_results(cursor, students)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+# Retrieve all classes
+@app.route('/api/classes', methods=['GET'])
+def get_classes():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM classes")
+            classes = cursor.fetchall()
+            return jsonify({"classes": format_results(cursor, classes)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+# Retrieve all streams
+@app.route('/api/streams', methods=['GET'])
+def get_streams():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM streams")
+            streams = cursor.fetchall()
+            return jsonify({"streams": format_results(cursor, streams)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+# Retrieve all language streams
+@app.route('/api/language_streams', methods=['GET'])
+def get_language_streams():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM language_streams")
+            language_streams = cursor.fetchall()
+            return jsonify({"language_streams": format_results(cursor, language_streams)}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'connection' in locals():
+            connection.close()
+
+
+# Retrieve all administrators
+@app.route('/api/administrators', methods=['GET'])
+def get_administrators():
+    try:
+        connection = connect_to_db()
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT id, name, username FROM administrators")
+            administrators = cursor.fetchall()
+            return jsonify({"administrators": format_results(cursor, administrators)}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     finally:
