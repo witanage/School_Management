@@ -244,6 +244,7 @@ def get_students():
                 JOIN classes c ON s.class_id = c.id
                 JOIN language_streams ls ON s.language_stream_id = ls.id
                 JOIN streams st ON s.stream_id = st.id
+                ORDER BY 1 DESC
             """
             cursor.execute(sql)
             students = cursor.fetchall()
@@ -261,7 +262,7 @@ def get_classes():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM classes")
+            cursor.execute("SELECT * FROM classes ORDER BY 1 DESC")
             classes = cursor.fetchall()
             return jsonify({"classes": format_results(cursor, classes)}), 200
     except Exception as e:
@@ -277,7 +278,7 @@ def get_streams():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM streams")
+            cursor.execute("SELECT * FROM streams ORDER BY 1 DESC")
             streams = cursor.fetchall()
             return jsonify({"streams": format_results(cursor, streams)}), 200
     except Exception as e:
@@ -293,7 +294,7 @@ def get_language_streams():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM language_streams")
+            cursor.execute("SELECT * FROM language_streams ORDER BY 1 DESC")
             language_streams = cursor.fetchall()
             return jsonify({"language_streams": format_results(cursor, language_streams)}), 200
     except Exception as e:
@@ -309,7 +310,7 @@ def get_administrators():
     try:
         connection = connect_to_db()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT id, name, username FROM administrators")
+            cursor.execute("SELECT id, name, username FROM administrators ORDER BY 1 DESC")
             administrators = cursor.fetchall()
             return jsonify({"administrators": format_results(cursor, administrators)}), 200
     except Exception as e:
