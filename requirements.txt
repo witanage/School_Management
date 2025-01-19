@@ -10,3 +10,4 @@ MarkupSafe==3.0.2
 pycparser==2.22
 PyMySQL==1.0.3
 Werkzeug==2.2.2
+pyjwt
